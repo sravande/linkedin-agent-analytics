@@ -1,0 +1,7 @@
+httpx
+python-dotenv
+sqlalchemy
+psycopg2-binary
+pydantic
+tenacity
+pytest
