@@ -62,12 +62,14 @@ class LinkedInAgentClient:
             timeout=30,
         )
 
+        # Rate limit handling
         if response.status_code == 429:
             retry_after = response.headers.get("Retry-After")
 
             if retry_after:
                 try:
-                    time.sleep(float(retry_after))
+                    wait_seconds = float(retry_after)
+                    time.sleep(wait_seconds)
                 except ValueError:
                     pass
 
@@ -75,6 +77,7 @@ class LinkedInAgentClient:
                 "API rate limit exceeded."
             )
 
+        # Temporary server errors
         if response.status_code in {
             500,
             502,
@@ -85,6 +88,7 @@ class LinkedInAgentClient:
                 f"Temporary API failure: HTTP {response.status_code}"
             )
 
+        # Permanent client errors
         if 400 <= response.status_code < 500:
             raise PermanentAPIError(
                 f"Permanent API failure: HTTP {response.status_code}"
