@@ -37,6 +37,20 @@ CREATE TABLE IF NOT EXISTS pipeline_runs (
     watermark_end TIMESTAMPTZ
 );
 
+CREATE TABLE IF NOT EXISTS dead_letter_records (
+    dead_letter_id BIGSERIAL PRIMARY KEY,
+    run_id BIGINT NOT NULL,
+    record_payload JSONB NOT NULL,
+    error_reason TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    retry_count INTEGER NOT NULL DEFAULT 0,
+    status VARCHAR(50) NOT NULL DEFAULT 'PENDING',
+
+    CONSTRAINT fk_dead_letter_run
+        FOREIGN KEY (run_id)
+        REFERENCES pipeline_runs(run_id)
+);
+
 CREATE TABLE IF NOT EXISTS pipeline_watermarks (
     pipeline_name VARCHAR(255) PRIMARY KEY,
     last_watermark TIMESTAMPTZ,
