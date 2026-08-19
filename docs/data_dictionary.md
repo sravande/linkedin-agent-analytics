@@ -108,3 +108,29 @@ agent\_sk | agent\_id | risk\_classification | is\_current
 
 205      | A001     | Moderate Risk       | TRUE
 
+
+# 9. DQ_Results_History
+
+### Grain
+
+One row per pipeline execution.
+
+### Purpose
+
+Stores historical data quality results for long-term monitoring,
+trend analysis, and Power BI reporting.
+
+| Column | Business Name | Data Type | Key Type | SCD | Business Definition / Rule |
+|---|---|---|---|---|---|
+| `run_id` | RunID | BIGINT | Composite Primary Key / FK | N/A | Identifies the pipeline execution that produced the DQ result. |
+| `execution_timestamp` | ExecutionTimestamp | TIMESTAMPTZ | Composite Primary Key | N/A | Timestamp at which the DQ evaluation occurred. |
+| `completeness_score` | CompletenessScore | DECIMAL(5,2) | Metric | N/A | Percentage score for completeness checks, from 0 to 100. |
+| `uniqueness_score` | UniquenessScore | DECIMAL(5,2) | Metric | N/A | Percentage score for uniqueness checks, from 0 to 100. |
+| `validity_score` | ValidityScore | DECIMAL(5,2) | Metric | N/A | Percentage score for validity checks, from 0 to 100. |
+| `timeliness_score` | TimelinessScore | DECIMAL(5,2) | Metric | N/A | Percentage score for timeliness/freshness checks, from 0 to 100. |
+| `referential_integrity_score` | ReferentialIntegrityScore | DECIMAL(5,2) | Metric | N/A | Percentage score for foreign-key integrity checks, from 0 to 100. |
+| `composite_dq_score` | CompositeDQScore | DECIMAL(5,2) | Metric | N/A | Weighted overall DQ score. Pipeline passes when score is at least 95%. |
+| `pass_fail_status` | PassFailStatus | VARCHAR(10) | Status | N/A | `PASS` when the DQ deployment gate succeeds; otherwise `FAIL`. |
+| `failed_test_count` | FailedTestCount | INTEGER | Metric | N/A | Number of failed DQ tests for the pipeline execution. |
+| `error_message` | ErrorMessage | VARCHAR(500) | Attribute | N/A | Error or failure information associated with the DQ evaluation. |
+| `created_at` | CreatedAt | TIMESTAMPTZ | Metadata | N/A | Timestamp when the DQ history record was created. |
