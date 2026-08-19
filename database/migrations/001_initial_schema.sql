@@ -36,3 +36,9 @@ CREATE TABLE IF NOT EXISTS pipeline_runs (
     watermark_start TIMESTAMPTZ,
     watermark_end TIMESTAMPTZ
 );
+
+CREATE TABLE IF NOT EXISTS pipeline_watermarks (
+    pipeline_name VARCHAR(255) PRIMARY KEY,
+    last_watermark TIMESTAMPTZ,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
