@@ -182,3 +182,32 @@ Fact\_OutreachActivity.DateSK
 
 &#x20;   -> Dim\_Date.DateSK
 
+
+# Composite Data Quality Score
+
+## Purpose
+
+A composite Data Quality (DQ) score is calculated for each pipeline
+execution to provide a single measure of warehouse data quality.
+
+The score ranges from 0% to 100%.
+
+## Dimension Scores
+
+Each quality dimension is represented as a value between 0.0 and 1.0.
+
+```text
+Dimension Score =
+Passed Checks / Total Checks
+
+# Scheduled Execution and Alerting
+
+## Execution Schedule
+
+The pipeline is scheduled through GitHub Actions.
+
+The production schedule is:
+
+```text
+02:00 UTC daily
+
